@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "ics": "^3.8.1",
     "openai": "^4.80.1"
   }
 }
