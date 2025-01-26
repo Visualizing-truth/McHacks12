@@ -1,25 +1,54 @@
-// import { Link } from "@heroui/link";
-// import { Snippet } from "@heroui/snippet";
-// import { Code } from "@heroui/code";
-// import { button as buttonStyles } from "@heroui/theme";
-
+import {Popover, PopoverTrigger, PopoverContent } from "@heroui/popover";
 import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
-import Link from "next/link";
+import FileInput from "@/components/file_input";
+import Questionnaire from "@/components/questionnaire";
 
-// import { siteConfig } from "@/config/site";
-// import { title, subtitle } from "@/components/primitives";
-// import { GithubIcon } from "@/components/icons";
-
-export default function Home() {
+export default function Page() {
   return (
-    <div
-      className="w-full h-screen flex flex-col justify-center items-center gap-4"
-      style={{ textAlign: "center" }}
-    >
-      <h1 className="text-8xl font-extrabold">Pro<span className="text-blue-300">Active</span></h1>
-      <Input multiple className="w-1/4" name="files" type="file" />
-      <Button color="default">Submit</Button>
+    <div>
+      <FileInput />
+      <Questionnaire />
     </div>
   );
 }
+
+// type OverlayPlacement = 
+//   | "top-start"
+//   | "top"
+//   | "top-end"
+
+// export default function App() {
+//   const content = (
+//     <PopoverContent>
+//       <div className="px-1 py-2">
+//         <div className="text-small font-bold">Popover Content</div>
+//         <div className="text-tiny">This is the popover content</div>
+//       </div>
+//     </PopoverContent>
+//   );
+
+//   const placements = [
+//     "top-start",
+//     "top",
+//     "top-end",
+//   ];
+
+//   return (
+//     <div className="flex flex-wrap md:inline-grid md:grid-cols-3 gap-4">
+//       {placements.map((placement) => (
+//         <Popover
+//           key={placement}
+//           color="secondary"
+//           placement={placement as OverlayPlacement}
+//         >
+//           <PopoverTrigger>
+//             <Button className="capitalize" color="secondary" variant="flat">
+//               {placement.replace("-", " ")}
+//             </Button>
+//           </PopoverTrigger>
+//           {content}
+//         </Popover>
+//       ))}
+//     </div>
+//   );
+// } 
