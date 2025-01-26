@@ -38,20 +38,20 @@ fs.readFile(calendarPath, "utf8", (err, data) => {
   });
 
   // print freeTime
+  /*
   freeTime.forEach((block) => {
     if (block.start.getFullYear() === new Date().getFullYear()) {
       console.log(`Free from ${block.start} to ${block.end}`);
     }
   });
-});
+  */
 
-/*
-function splitDays(freeTime) {
-  let freeTimeSplit = [];
+  const freeTimeSplit = [];
 
-  freeTime.forEach((event) => {
-    let startTime = new Date(event.getFirstPropertyValue("dtstart"));
-    let endTime = new Date(event.getFirstPropertyValue("dtend"));
+  // splitDays
+  freeTime.forEach((block) => {
+    let startTime = new Date(block.start);
+    let endTime = new Date(block.end);
 
     while (startTime < endTime) {
       const nextMidnight = new Date(startTime);
@@ -71,9 +71,16 @@ function splitDays(freeTime) {
     }
   });
 
-  return freeTimeSplit;
-}
+  console.log("SPLIT TIME STARTS NOW");
 
+  freeTimeSplit.forEach((block) => {
+    if (block.start.getFullYear() === new Date().getFullYear()) {
+      console.log(`Free from ${block.start} to ${block.end}`);
+    }
+  });
+});
+
+/*
 readICS(calendarPath)
   .then((events) => {
     // console.log(events);
@@ -87,7 +94,7 @@ readICS(calendarPath)
   .catch((err) => {
     console.error("Failed to read ICS file", err);
   });
-  */
+*/
 
 /*
 const result = readImage(imagePath);
