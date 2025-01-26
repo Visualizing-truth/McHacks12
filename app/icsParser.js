@@ -1,6 +1,6 @@
 const fs = require("fs");
 const ICAL = require("ical.js");
-const calendarPath = "FINAL.ics";
+const calendarPath = "myCalendar.ics";
 
 const firstDate = new Date(2025, 0, 27, 0, 0, 0);
 const lastDate = new Date(2025, 1, 3, 0, 0, 0);
@@ -22,37 +22,6 @@ fs.readFile(calendarPath, "utf8", (err, data) => {
       new Date(b.getFirstPropertyValue("dtstart")).getTime()
     );
   });
-  
-let blocks2025 = [];
-events.forEach((event) => {
-    const startTime = new Date(
-      event.getFirstPropertyValue("dtstart")
-    ).getTime();
-    const endTime = new Date(event.getFirstPropertyValue("dtend")).getTime();
-
-    //console.log(startTime);
-    blocks2025.push({ start: startTime, end: endTime });
-  });
-
-
-  blocks2025 = blocks2025.filter(
-    (block) => new Date(block.start).getFullYear() === new Date().getFullYear()
-  );
-
-  console.log(`2025 events length - ${blocks2025.length}`);
-  blocks2025.forEach((block) => {
-    console.log(`start ${new Date(block.start).getDate()} : ${new Date(block.start).getHours()}:${new Date(block.start).getMinutes()} to ${new Date(block.end).getDate()} : ${new Date(block.end).getHours()}:${new Date(block.end).getMinutes()}`);
-  });
-
-//
-//
-//
-//
-
-
-
-
-
 
   // sortedEvents check - working fine
   /*
@@ -69,7 +38,7 @@ events.forEach((event) => {
     ).getTime();
     const endTime = new Date(event.getFirstPropertyValue("dtend")).getTime();
 
-    //console.log(startTime);
+    // console.log(startTime);
     sortedBlocks.push({ start: startTime, end: endTime });
   });
 

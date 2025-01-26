@@ -20,32 +20,3 @@ DTSTART:19701101T020000
 RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
 END:STANDARD
 END:VTIMEZONE
-BEGIN:VEVENT
-DTSTART;TZID=America/Toronto:20250127T1300000
-DTEND;TZID=America/Toronto:20250127T1500000
-SUMMARY:Study for Courses
-DESCRIPTION:Discuss project progress and next steps.
-LOCATION:Conference Room
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;TZID=America/Toronto:20250127T1500000
-DTEND;TZID=America/Toronto:20250127T1600000
-SUMMARY:Work on personal project
-DESCRIPTION:Discuss project progress and next steps.
-LOCATION:Conference Room
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;TZID=America/Toronto:20250127T2200000
-DTEND;TZID=America/Toronto:20250128T0100000
-SUMMARY:Spend time with friends
-DESCRIPTION:Discuss project progress and next steps.
-LOCATION:Conference Room
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;TZID=America/Toronto:20250128T2200000
-DTEND;TZID=America/Toronto:20250128T2300000
-SUMMARY:Spend time with friends
-DESCRIPTION:Discuss project progress and next steps.
-LOCATION:Conference Room
-END:VEVENT
-END:VCALENDAR
