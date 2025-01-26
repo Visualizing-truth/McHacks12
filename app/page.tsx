@@ -6,7 +6,6 @@ import Questionnaire from "@/components/questionnaire";
 export default function Page() {
   return (
     <div>
-      <FileInput />
       <Questionnaire />
     </div>
   );
