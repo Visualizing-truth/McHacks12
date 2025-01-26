@@ -1,5 +1,6 @@
 const fs = require("fs");
 const ICAL = require("ical.js");
+const { blob } = require("stream/consumers");
 const calendarPath = "myCalendar.ics";
 
 const firstDate = new Date(2025, 0, 27, 0, 0, 0);
@@ -23,72 +24,34 @@ fs.readFile(calendarPath, "utf8", (err, data) => {
     );
   });
 
-  // sortedEvents check - working fine
-  /*
-  console.log(`sorted events length - ${sortedEvents.length}`);
-  sortedEvents.forEach((block) => {
-    console.log(sortedEvents);
-  });
-  */
+  // Create a new list that contains the start and end points of the free time blocks between the actual events
+  const freeTimeBlocks = [];
 
-  let sortedBlocks = [];
+  // Initialize the start of the first free time block to the start of the day
+  let freeStartTime = new Date(firstDate);
+  freeStartTime.setHours(0, 0, 0, 0);
+
   sortedEvents.forEach((event) => {
-    const startTime = new Date(
-      event.getFirstPropertyValue("dtstart")
-    ).getTime();
-    const endTime = new Date(event.getFirstPropertyValue("dtend")).getTime();
+    const eventStartTime = event.getFirstPropertyValue("dtstart").toJSDate();
+    const eventEndTime = event.getFirstPropertyValue("dtend").toJSDate();
 
-    // console.log(startTime);
-    sortedBlocks.push({ start: startTime, end: endTime });
+    if (freeStartTime < eventStartTime) {
+      freeTimeBlocks.push({ start: freeStartTime, end: eventStartTime });
+    }
+
+    freeStartTime = eventEndTime;
   });
 
-  // console.log(sortedBlocks);
-
-  // list containing the start and end points of the free time blocks between the actual events
-  let freeTimeBlocks = [];
-
-  let prevEndTime = null;
-  let count = 0;
-
-  for (let i = 0; i < sortedBlocks.length; i++) {
-    let block = sortedBlocks[i];
-    if (count === 0) {
-      // first iteration of block so initialize first prevEndTime
-      count++;
-      prevEndTime = block.end;
-      continue;
-    }
-    let currentStartTime = block.start;
-
-    // add a free block only if free time more than 1 hour
-    if (
-      (new Date(currentStartTime).getTime() - new Date(prevEndTime).getTime()) /
-        (1000 * 60 * 60) <
-      1
-    ) {
-      prevEndTime = block.end;
-      continue;
-    }
-
-    freeTimeBlocks.push({ start: prevEndTime, end: currentStartTime });
-    prevEndTime = block.end;
+  // Handle the time after the last event until the end of the day
+  const endOfDay = new Date(lastDate);
+  endOfDay.setHours(23, 59, 59, 999);
+  if (freeStartTime < endOfDay) {
+    freeTimeBlocks.push({ start: freeStartTime, end: endOfDay });
   }
-
-  console.log(`all free time block length - ${freeTimeBlocks.length}`);
-  freeTimeBlocks.forEach((block) => {
-    console.log(`Free from ${block.start} to ${block.end}`);
-  });
-
-  //
-  //
-  //
-  //
-  //
-  //
 
   // get all free blocks in current year
   let freeYearBlocks = freeTimeBlocks.filter(
-    (block) => new Date(block.start).getFullYear() === new Date().getFullYear()
+    (block) => block.start.getFullYear() === new Date().getFullYear()
   );
 
   /*
