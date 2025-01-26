@@ -2,6 +2,9 @@ const fs = require("fs");
 const ICAL = require("ical.js");
 const calendarPath = "myCalendar.ics";
 
+const firstDate = new Date(2025, 0, 27, 0, 0, 0);
+const lastDate = new Date(2025, 1, 3, 0, 0, 0);
+
 fs.readFile(calendarPath, "utf8", (err, data) => {
   if (err) {
     console.error("Error reading the file", err);
@@ -13,13 +16,34 @@ fs.readFile(calendarPath, "utf8", (err, data) => {
 
   const events = comp.getAllSubcomponents("vevent");
 
+  const sortedEvents = events;
+
+  // printing scheduled events in this year
+  /*
+  events.forEach((event) => {
+    if (
+      new Date(event.getFirstPropertyValue("dtstart")).getFullYear() ===
+      new Date().getFullYear()
+    ) {
+      console.log(
+        `Free from ${new Date(event.getFirstPropertyValue("dtstart")).toLocaleDateString()} ${new Date(event.getFirstPropertyValue("dtstart")).toLocaleTimeString()} \
+        to ${new Date(event.getFirstPropertyValue("dtstart")).toLocaleDateString()} ${new Date(event.getFirstPropertyValue("dtend")).toLocaleTimeString()}`
+      );
+    }
+  });
+  */
+
+  // printing free events
+
   // getFreeTime
+  /*
   const sortedEvents = events.sort((a, b) => {
     return (
       new Date(a.getFirstPropertyValue("dtstart")).getTime() -
       new Date(b.getFirstPropertyValue("dtstart")).getTime()
     );
   });
+  */
 
   const freeTime = [];
   let lastEndTime = null;
@@ -37,7 +61,9 @@ fs.readFile(calendarPath, "utf8", (err, data) => {
     lastEndTime = endTime;
   });
 
-  // print freeTime
+  console.log(`total free time length - ${freeTime.length}`);
+
+  // print freeTime without day splits
   /*
   freeTime.forEach((block) => {
     if (block.start.getFullYear() === new Date().getFullYear()) {
@@ -46,10 +72,16 @@ fs.readFile(calendarPath, "utf8", (err, data) => {
   });
   */
 
+  const yearlyFreeTime = freeTime.filter((block) => {
+    return block.start.getFullYear() === new Date().getFullYear();
+  });
+
+  console.log(`2025 year free time length - ${yearlyFreeTime.length}`);
+
   const freeTimeSplit = [];
 
   // splitDays
-  freeTime.forEach((block) => {
+  yearlyFreeTime.forEach((block) => {
     let startTime = new Date(block.start);
     let endTime = new Date(block.end);
 
@@ -73,30 +105,33 @@ fs.readFile(calendarPath, "utf8", (err, data) => {
 
   console.log("SPLIT TIME STARTS NOW");
 
-  freeTimeSplit.forEach((block) => {
-    if (block.start.getFullYear() === new Date().getFullYear()) {
-      console.log(`Free from ${block.start} to ${block.end}`);
-    }
+  const weeklyFreeTime = freeTimeSplit.filter((block) => {
+    return block.start >= firstDate && block.end <= lastDate;
   });
+
+  console.log(
+    `events within date range free time length - ${weeklyFreeTime.length}`
+  );
+
+  console.log(`final free time list - ${weeklyFreeTime.length}`);
+
+  weeklyFreeTime.forEach((block) => {
+    console.log(`Free from ${block.start} to ${block.end}`);
+  });
+
+  // sort the freeTime blocks
+  /*
+  freeTimeSplit.sort((a, b) => {
+    return new Date(a.start) - new Date(b.start);
+  });
+  */
+
+  // print freeTime with day splits
+
+  // get freeTime for 1 week only
+  /*
+  const weeklyFreeTime = freeTimeSplit.filter((block) => {
+    return block.start >= firstDate && block.end <= lastDate;
+  });
+  */
 });
-
-/*
-readICS(calendarPath)
-  .then((events) => {
-    // console.log(events);
-
-    const freeTime = getFreeTime(events);
-    printFreeTime(freeTime);
-
-    const freeTimeSplit = splitDays(freeTime);
-    //printFreeTime(freeTimeSplit);
-  })
-  .catch((err) => {
-    console.error("Failed to read ICS file", err);
-  });
-*/
-
-/*
-const result = readImage(imagePath);
-console.log(result);
-*/
