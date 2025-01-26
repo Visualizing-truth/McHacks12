@@ -47,7 +47,7 @@ fs.readFile(calendarPath, "utf8", (err, data) => {
   // list containing the start and end points of the free time blocks between the actual events
   let freeTimeBlocks = [];
 
-  let prevEndTime = null;
+  let prevEndTime = 0;
   let count = 0;
 
   for (let i = 0; i < sortedBlocks.length; i++) {
@@ -74,10 +74,12 @@ fs.readFile(calendarPath, "utf8", (err, data) => {
     prevEndTime = block.end;
   }
 
+  /*
   console.log(`all free time block length - ${freeTimeBlocks.length}`);
   freeTimeBlocks.forEach((block) => {
     console.log(`Free from ${block.start} to ${block.end}`);
   });
+  */
 
   //
   //
